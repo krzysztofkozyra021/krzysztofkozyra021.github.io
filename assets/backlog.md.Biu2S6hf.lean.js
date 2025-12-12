@@ -1,0 +1,1 @@
+import{_ as i,c as e,o as l,ae as o}from"./chunks/framework.BQlYxExx.js";const p=JSON.parse('{"title":"Backlog","description":"","frontmatter":{},"headers":[],"relativePath":"backlog.md","filePath":"backlog.md"}'),n={name:"backlog.md"};function r(t,a,c,d,k,u){return l(),e("div",null,[...a[0]||(a[0]=[o("",7)])])}const s=i(n,[["render",r]]);export{p as __pageData,s as default};
