@@ -25,5 +25,5 @@ features:
 <div style="text-align: center; margin-top: 50px;">
   <h3>Wydział Nauk Technicznych i Ekonomicznych</h3>
   <p>Prowadzący zajęcia: mgr inż. Marcin Tracz</p>
-  <p>Legnica, grudzień 2025</p>
+  <p>Legnica, 2026</p>
 </div>
