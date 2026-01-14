@@ -2,26 +2,48 @@
 
 ## 4.1. Event Storming
 
-Sesja Event Storming została przeprowadzona online za pomocą narzędzia Miro, aby zidentyfikować kluczowe zdarzenia (Events), polecenia (Commands) i systemy (System boundaries) w domenie adopcji zwierząt. Sesja pomogła w walidacji założeń projektowych oraz wyznaczeniu wstępnych granic kontekstów (Bounded Contexts) dla Backendu.
+Sesja Event Storming została przeprowadzona online za pomocą narzędzia Miro. Celem sesji było zidentyfikowanie kluczowych zdarzeń biznesowych (Events), komend wyzwalających akcje (Commands), reguł biznesowych (Policies) oraz granic agregatów w domenie systemu *ŁapGo*.
 
-### Kluczowe Zdarzenia (Events)
+![Legenda notacji wykorzystanej podczas sesji Event Storming.](/images/legenda-event-storming.png)
+*Rysunek 1: Legenda notacji wykorzystanej podczas sesji Event Storming.*
 
-Zdarzenia, które mają znaczenie dla aplikacji ŁapGo:
+### Kluczowe Procesy Biznesowe
 
-- **Ogłoszenie Zostało Zaggregowane**: Nowe ogłoszenie zwierzęcia zostało pomyślnie pobrane i sparsowane przez scraper.
-- **Ogłoszenie Zostało Zweryfikowane**: Administrator potwierdził poprawność i aktualność danych ogłoszenia.
-- **Zwierzę Zostało Dodane Do Ulubionych**: Użytkownik dodał zwierzę do listy obserwowanych.
-- **Preferencje Zostały Zaktualizowane**: Użytkownik zmienił kryteria wyszukiwania wymarzonego zwierzaka.
-- **Zwierzę Zostało Adoptowane**: Status zwierzęcia zmienił się na "Adoptowane", co wymaga usunięcia/zarchiwizowania ogłoszenia.
+Na podstawie przeprowadzonych prac wyróżniono następujące procesy:
 
-### Granice Kontekstów (Bounded Contexts)
+#### 1. Rejestracja i Autoryzacja
+Proces obejmuje dwa główne flow: dla standardowego Użytkownika oraz dla Schroniska. W obu przypadkach kluczowa jest weryfikacja adresu e-mail oraz obsługa błędnego logowania.
 
-Podczas sesji wstępnie zdefiniowano następujące granice:
+![Flow rejestracji i logowania użytkownika z uwzględnieniem przywracania sesji.](/images/rejestracja-logowanie-uzytkownik.png)
+*Rysunek 2: Flow rejestracji i logowania użytkownika z uwzględnieniem przywracania sesji.*
 
-- **Agregacja Ogłoszeń**: Odpowiedzialny za pobieranie, scrapowanie, walidację danych i zasilanie bazy.
-- **Zarządzanie Użytkownikiem**: Autoryzacja, zarządzanie profilem i preferencjami.
-- **Wyszukiwanie i Dopasowywanie**: Algorytm dopasowujący zwierzęta do preferencji, filtrowanie, geolokalizacja.
-- **Panel Administracyjny**: Weryfikacja ogłoszeń, zarządzanie tagami i schroniskami.
+W przypadku Schroniska proces jest rozszerzony o dedykowany krok weryfikacji placówki, co ma na celu zapewnienie bezpieczeństwa zwierząt.
+
+![Proces rejestracji schroniska wymagający dodatkowej weryfikacji danych przez system.](/images/rejestracja-logowanie-schronisko.png)
+*Rysunek 3: Proces rejestracji schroniska wymagający dodatkowej weryfikacji danych przez system.*
+
+#### 2. Zarządzanie Profilem i Preferencjami
+Użytkownicy mogą aktualizować swoje dane oraz definiować preferencje adopcyjne (gatunek, wiek, wielkość). Zmiana preferencji automatycznie wpływa na widok dopasowanych zwierząt.
+
+![Procesy aktualizacji profilu oraz konfiguracji filtrów dopasowań.](/images/aktualizacja-profilu-użytkownika.png)
+![Procesy aktualizacji profilu oraz konfiguracji filtrów dopasowań.](/images/konfiguracja-preferencji-adopcyjnych.png)
+*Rysunek 4: Procesy aktualizacji profilu oraz konfiguracji filtrów dopasowań.*
+
+#### 3. Import i Agregacja Danych
+System automatycznie pobiera dane z zewnętrznych witryn schronisk. Proces ten obejmuje analizę strony, mapowanie pól na model wewnętrzny oraz pobieranie i zapisywanie zdjęć do magazynu (Storage/CDN).
+
+![Automatyczny proces importu zwierząt z zewnętrznych źródeł (Crawlery).](/images/import_crawling.png)
+*Rysunek 5: Automatyczny proces importu zwierząt z zewnętrznych źródeł (Crawlery).*
+
+![Szczegółowy proces przetwarzania i zapisu multimediów.](/images/zapisywanie_zdjec_storage.png)
+*Rysunek 6: Szczegółowy proces przetwarzania i zapisu multimediów.*
+
+### Kluczowe Zdarzenia Domenowe (Events)
+Zidentyfikowane zdarzenia o największym znaczeniu dla logiki aplikacji:
+- **Zwierzak Wykryty i Zmapowany**: Moment poprawnego sparsowania danych przez crawler.
+- **Zdjęcia Zwierzaka Pobrane i Zapisane**: Potwierdzenie dostępności zasobów multimedialnych.
+- **Preferencje Zaaktualizowane**: Wyzwalacz dla algorytmu dopasowującego ogłoszenia.
+- **Schronisko Zweryfikowane**: Decyzja administracyjna dopuszczająca schronisko do publikacji własnych ofert.
 
 ## 4.2. User Stories
 
